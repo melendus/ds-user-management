@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -25,6 +26,15 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ClientsModule.register([
+      {
+        name: 'Devices_MICROSERVICE',
+        transport: Transport.TCP,
+        options: {
+          port: 9001,
+        },
+      },
+    ]),
   ],
   controllers: [AppController, UsersController],
   providers: [AppService],

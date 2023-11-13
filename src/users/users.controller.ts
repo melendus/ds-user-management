@@ -44,4 +44,18 @@ export class UsersController {
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.User)
+  @Delete('devices/:id')
+  async removeUserAndDevices(@Param('id') id: string) {
+    await this.usersService.removeUserAndDevices(+id);
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.User)
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.usersService.findOne(id);
+  }
 }
